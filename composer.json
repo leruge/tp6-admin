@@ -2,7 +2,7 @@
     "name": "leruge/tp6-admin",
     "description": "适用于thinkphp6的后台扩展",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "leruge",
@@ -13,8 +13,7 @@
         "php": "^7.1.0",
         "topthink/framework": "^6.0.0",
         "topthink/think-view": "^1.0",
-        "topthink/think-migration": "^3.0",
-        "leruge/tp6-helper": "dev-main"
+        "topthink/think-migration": "^3.0"
     },
     "autoload": {
         "psr-4": {

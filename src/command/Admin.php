@@ -54,6 +54,9 @@ class Admin extends Command
         $validateSourcePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'validate';
         $validateTargetPath = root_path() . 'app' . DIRECTORY_SEPARATOR . 'validate';
         $this->copyFile($validateSourcePath, $validateTargetPath);
+
+        // 成功
+        $output->writeln('后台文件生成成功');
     }
 
     // 复制文件到指定目录

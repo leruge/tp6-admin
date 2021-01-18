@@ -12,7 +12,7 @@ class Login
     public function login()
     {
         if (request()->isAjax()) {
-            $params = requeset()->only(['username', 'password']);
+            $params = request()->only(['username', 'password']);
             $validate = (new Admin())->scene('login');
             if (!$validate->check($params)) {
                 result(null, 0, $validate->getError());
