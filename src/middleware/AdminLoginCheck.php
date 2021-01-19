@@ -65,6 +65,10 @@ class AdminLoginCheck
     // 无权限
     private function noAuth()
     {
-        return redirect((string)url('admin.Index/wdlNoAuth'), 403);
+        if (request()->isAjax()) {
+            return json(['code' => 0, 'msg' => '无权限']);
+        } else {
+            return redirect((string)url('admin.Index/wdlNoAuth'), 403);
+        }
     }
 }

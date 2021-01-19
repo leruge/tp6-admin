@@ -26,7 +26,8 @@
                 "leruge\\AdminService"
             ],
             "config": {
-                "extra": "src/config/extra.php"
+                "extra": "src/config/extra.php",
+                "admin": "src/config/admin.php"
             }
         }
     }

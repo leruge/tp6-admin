@@ -11,7 +11,7 @@
 1. 安装后台扩展 `composer require leruge/tp6-admin=dev-master`
 1. 安装封装函数 `composer require leruge/tp6-helper=dev-main`
 1. 生成后台所需文件 `php think leruge:admin`
-1. 执行完后会在config目录生成extra.php配置文件
+1. 执行完后会在config目录生成extra.php和admin.php配置文件
 1. 执行完成以后会生成各种模型、控制器等文件
 1. 开启开发模式env
 1. 删除static下的.gitignore文件
