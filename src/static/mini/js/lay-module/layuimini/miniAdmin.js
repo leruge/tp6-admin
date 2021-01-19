@@ -250,33 +250,18 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
             $('body').on('click', '[data-clear]', function () {
                 var loading = layer.load(0, {shade: false, time: 2 * 1000});
                 sessionStorage.clear();
-
-                // 判断是否清理服务端
-                var clearUrl = $(this).attr('data-href');
-                if (clearUrl != undefined && clearUrl != '' && clearUrl != null) {
-                    $.getJSON(clearUrl, function (data, status) {
-                        layer.close(loading);
-                        if (data.code != 1) {
-                            return miniAdmin.error(data.msg);
-                        } else {
-                            return miniAdmin.success(data.msg);
-                        }
-                    }).fail(function () {
-                        layer.close(loading);
-                        return miniAdmin.error('清理缓存接口有误');
-                    });
-                } else {
-                    layer.close(loading);
-                    return miniAdmin.success('清除缓存成功');
-                }
+                layer.close(loading);
+                layer.msg("清除成功");
             });
 
             /**
              * 刷新
              */
             $('body').on('click', '[data-refresh]', function () {
+                let load = layer.load(0, {shade: false, time: 2 * 1000});
                 $(".layui-tab-item.layui-show").find("iframe")[0].contentWindow.location.reload();
-                miniAdmin.success('刷新成功');
+                layer.close(load);
+                layer.msg("刷新成功");
             });
 
             /**
