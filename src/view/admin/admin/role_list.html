@@ -1,0 +1,109 @@
+{extend name="common/__admin"}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">角色列表，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>角色列表</legend>
+</fieldset>
+
+<table id="table" lay-filter="table"></table>
+
+<!--操作-->
+<script id="operation" type="text/html">
+    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+    <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+</script>
+
+<!--工具栏-->
+<script id="toolbar" type="text/html">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="del">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+    </div>
+</script>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", 'miniTab'], function () {
+        let $ = layui.jquery;
+
+        // 数据表格
+        layui.table.render({
+            elem: "#table",
+            id: "table",
+            cols: [[
+                {type: "checkbox"},
+                {title: "角色名", field: "title"},
+                {title: "添加时间", field: "create_time"},
+                {title: "操作", toolbar: "#operation"}
+            ]],
+            url: "{:url('admin.Admin/roleList')}",
+            method: "post",
+            parseData: function (res) {
+                return {
+                    code: res.code,
+                    msg: res.msg,
+                    data: res.data.list,
+                    count: res.data.count
+                };
+            },
+            page: false,
+            even: true,
+            toolbar: "#toolbar",
+            defaultToolbar: []
+        });
+
+        // 工具栏
+        layui.table.on("toolbar(table)", function (obj) {
+            if (obj.event == "add") {
+                layui.miniTab.openNewTabByIframe({
+                    title: "添加角色",
+                    href: "{:url('admin.Admin/addRole')}"
+                });
+            } else if (obj.event == "refresh") {
+                location.reload();
+            } else if (obj.event == "del") {
+                let checkStatus = layui.table.checkStatus('table').data;
+                if (checkStatus.length == 0) {
+                    layer.msg("至少选择一个");
+                } else {
+                    layer.confirm("确定删除吗？", {icon: 3, title: "删除角色"}, function () {
+                        let role_ids = checkStatus.map(x => {return x.id}).join(",");
+                        request($, "{:url('admin.Admin/delRole')}", {role_ids: role_ids}, function (res) {
+                            if (res.code == 1) {
+                                layer.msg(res.msg, function () {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        });
+                    });
+                }
+            }
+        });
+
+        // 工具
+        layui.table.on("tool(table)", function (obj) {
+            if (obj.event == "edit") {
+                layui.miniTab.openNewTabByIframe({
+                    title: "编辑角色",
+                    href: "{:url('admin.Admin/editRole')}?id=" + obj.data.id
+                });
+            } else if (obj.event == "del") {
+                layer.confirm("确定删除吗？", {icon: 3, title: "删除角色"}, function () {
+                    request($, "{:url('admin.Admin/delRole')}", {role_ids: obj.data.id}, function (res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                            obj.del();
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>
+{/block}

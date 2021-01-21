@@ -2,6 +2,10 @@
 
 namespace app\controller\admin;
 
+use app\model\AuthRule;
+use think\facade\Db;
+use think\facade\View;
+
 class System
 {
     // 基本信息
@@ -48,11 +52,11 @@ class System
     {
         if (request()->isPost()) {
             $menuList = AuthRule::order(['sort' => 'asc', 'id' => 'asc'])->select()->toArray();
-            $menuList = recursion($menuList, 0);
-            foreach ($menuList as $k => $v) {
-                $menuList[$k]['title'] = $v['title'];
-            }
-            result(['list' => $menuList, 'count' => count($menuList)], 0, '获取分页数据成功');
+            $res = [
+                'list' => $menuList,
+                'count' => count($menuList)
+            ];
+            result($res, 0);
         }
         return view();
     }
@@ -82,7 +86,7 @@ class System
             }
             result(null, 1, '设置成功');
         }
-        $oneMenuList = AuthRule::where(['pid' => 0])->order('sort', 'asc')->select();
+        $oneMenuList = AuthRule::where(['pid' => 0])->order(['sort' => 'asc', 'id' => 'asc'])->select();
         $menuInfo = AuthRule::find(input('id'));
         $viewData = [
             'oneMenuList' => $oneMenuList,
@@ -97,6 +101,7 @@ class System
     {
         if (request()->isAjax()) {
             $params = request()->only(['pid', 'title', 'name', 'icon', 'sort', 'is_show']);
+            $params['pid'] ??= 0;
             $validate = (new \app\validate\System())->scene('add');
             if (!$validate->check($params)) {
                 result(null, 0, $validate->getError());
@@ -118,7 +123,7 @@ class System
                 result(null, 1, '操作成功');
             }
         }
-        $oneMenuList = AuthRule::where(['pid' => 0])->order('sort', 'asc')->select();
+        $oneMenuList = AuthRule::where(['pid' => 0])->order(['sort' => 'asc', 'id' => 'asc'])->select();
         $viewData = [
             'oneMenuList' => $oneMenuList
         ];
@@ -137,6 +142,6 @@ class System
             Db::rollback();
             result(null, 0, $e->getMessage());
         }
-        result(null, 1, '操作成功');
+        result(null, 1, '删除成功');
     }
 }

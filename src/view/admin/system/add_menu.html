@@ -1,0 +1,96 @@
+{extend name="common/__admin"}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">添加菜单，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>添加菜单</legend>
+</fieldset>
+
+<form class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <label class="layui-form-label">上级菜单</label>
+        <div class="layui-input-block">
+            <select name="pid">
+                <option value="">顶级菜单</option>
+                {volist name="oneMenuList" id="vo"}
+                <option value="{$vo.id}">{$vo.title}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="title" placeholder="菜单名称" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单地址</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="name" placeholder="菜单地址" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择图标</label>
+        <div class="layui-input-block">
+            <input type="text" name="icon" id="icon_picker" style="display: none;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input type="number" class="layui-input" name="sort" value="9" placeholder="排序" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示|隐藏</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="is_show" value="1" lay-skin="switch" lay-text="显示|隐藏" checked>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="submit">添加</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['form', 'element', 'iconPickerFa'], function () {
+        let $ = layui.jquery;
+
+        // 渲染选择图标
+        layui.iconPickerFa.render({
+            elem: "#icon_picker",
+            url: "/static/mini/lib/font-awesome-4.7.0/less/variables.less",
+            search: true,
+            page: true,
+            limit: 12
+        });
+
+        // 提交
+        layui.form.on("submit(submit)", function (obj) {
+            if (isClick) {
+                isClick = false;
+                if (!obj.field.is_show) {
+                    obj.field['is_show'] = 2
+                }
+                request($, "{:url('admin.System/addMenu')}", obj.field, function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg, function () {
+                            location.reload();
+                        });
+                    } else {
+                        isClick = true;
+                        layer.msg(res.msg);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+{/block}

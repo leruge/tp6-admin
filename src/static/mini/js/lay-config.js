@@ -21,6 +21,7 @@ layui.config({
     miniTongji: "layuimini/miniTongji", // layuimini 统计扩展
     step: 'step-lay/step', // 分步表单扩展
     treetable: 'treetable-lay/treetable', //table树形扩展
+    treeTable: 'treeTable/treeTable', //table树形扩展
     tableSelect: 'tableSelect/tableSelect', // table选择扩展
     iconPickerFa: 'iconPicker/iconPickerFa', // fa图标选择扩展
     echarts: 'echarts/echarts', // echarts图表扩展
@@ -28,3 +29,41 @@ layui.config({
     wangEditor: 'wangEditor/wangEditor', // wangEditor富文本扩展
     layarea: 'layarea/layarea', //  省市县区三级联动下拉选择器
 });
+
+let isClick = true;
+// 封装请求
+function request($, url, formData, successCallback, method = 'post')
+{
+    if (formData instanceof FormData) {
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            success: successCallback,
+            error: function () {
+                isClick = true;
+                console.log('请求错误');
+                console.log(url);
+                console.log(formData);
+            }
+        });
+    } else {
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            dataType: "json",
+            success: successCallback,
+            error: function () {
+                isClick = true;
+                console.log('请求错误');
+                console.log(url);
+                console.log(formData);
+            }
+        });
+    }
+}

@@ -1,0 +1,98 @@
+{extend name="common/__admin"}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">编辑菜单，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>编辑菜单</legend>
+</fieldset>
+
+<form class="layui-form layui-form-pane">
+    <input type="hidden" name="id" value="{$menuInfo.id}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">上级菜单</label>
+        <div class="layui-input-block">
+            <select name="pid">
+                <option value="">顶级菜单</option>
+                {volist name="oneMenuList" id="vo"}
+                <option value="{$vo.id}" {if ($vo.id == $menuInfo.pid)}selected{/if} {if ($vo.id == $menuInfo.id)}disabled{/if}>{$vo.title}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="title" value="{$menuInfo.title}" placeholder="菜单名称" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单地址</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="name" value="{$menuInfo.name}" placeholder="菜单地址" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择图标</label>
+        <div class="layui-input-block">
+            <input type="text" name="icon" id="icon_picker" lay-filter="icon_picker" value="{$menuInfo.icon}" style="display: none;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input type="number" class="layui-input" name="sort" value="{$menuInfo.sort}" placeholder="排序" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示|隐藏</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="is_show" value="1" lay-skin="switch" lay-text="显示|隐藏" {if ($menuInfo.is_show == 1)}checked{/if}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="submit">编辑</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['form', 'iconPickerFa', "miniTab"], function () {
+        let $ = layui.jquery;
+
+        // 渲染选择图标
+        layui.iconPickerFa.render({
+            elem: "#icon_picker",
+            url: "/static/mini/lib/font-awesome-4.7.0/less/variables.less",
+            search: true,
+            page: true,
+            limit: 12
+        });
+
+        // 提交
+        layui.form.on("submit(submit)", function (obj) {
+            obj.field.is_show = obj.field.is_show === undefined ? 2 : 1;
+            if (isClick) {
+                isClick = false;
+                if (!obj.field.is_show) {
+                    obj.field['is_show'] = 2
+                }
+                request($, "{:url('admin.System/editMenu')}", obj.field, function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg, function () {
+                            layui.miniTab.deleteCurrentByIframe();
+                        });
+                    } else {
+                        isClick = true;
+                        layer.msg(res.msg);
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+{/block}

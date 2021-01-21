@@ -29,4 +29,11 @@ class Login
         }
         return view();
     }
+
+    // 退出登录
+    public function logout()
+    {
+        session(null);
+        result(null, 1, '退出成功');
+    }
 }

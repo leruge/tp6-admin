@@ -80,5 +80,13 @@ class Admin extends Migrator
             ->addColumn('update_time', 'integer', ['null' => true])
             ->addColumn('delete_time', 'integer', ['null' => true])
             ->create();
+
+        $this->table('store', ['collation' => 'utf8mb4_bin', 'comment' => '文件库'])
+            ->addColumn('url', 'string', ['default' => null, 'comment' => '文件地址'])
+            ->addColumn('hash', 'string', ['default' => null, 'comment' => 'hash值'])
+            ->addColumn('create_time', 'integer', ['null' => true])
+            ->addColumn('update_time', 'integer', ['null' => true])
+            ->addColumn('delete_time', 'integer', ['null' => true])
+            ->create();
     }
 }

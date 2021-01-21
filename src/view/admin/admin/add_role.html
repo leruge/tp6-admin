@@ -1,0 +1,78 @@
+{extend name="common/__admin"}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">添加角色，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>添加角色</legend>
+</fieldset>
+
+<form class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色名</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="title" id="title" placeholder="角色名" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">权限选择</label>
+        <div class="layui-input-block">
+            <div id="tree"></div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="submit">添加</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['tree', 'form'], function () {
+        let $ = layui.jquery,
+            treeData = {$oneMenuList|raw};
+
+        // 树状结构
+        layui.tree.render({
+            elem: "#tree",
+            data: treeData,
+            showCheckbox: true,
+            id: "tree"
+        });
+
+        // 提交
+        layui.form.on("submit(submit)", function () {
+            if (isClick) {
+                isClick = false;
+                let checkData = layui.tree.getChecked("tree");
+                let newData = [];
+                for (let i = 0;i < checkData.length; i++) {
+                    newData.push(checkData[i].id);
+                    let children = checkData[i].children;
+                    for (let j = 0;j < children.length;j++) {
+                        newData.push(children[j].id);
+                    }
+                }
+                if (newData.length == 0) {
+                    isClick = true;
+                    layer.msg("至少选择一个权限");
+                } else {
+                    request($, "{:url('admin.Admin/addRole')}", {title: $("#title").val(), rules: newData.join(",")}, function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg, function () {
+                                location.reload();
+                            });
+                        } else {
+                            isClick = true;
+                            layer.msg(res.msg);
+                        }
+                    });
+                }
+            }
+            return false;
+        });
+    });
+</script>
+{/block}

@@ -156,7 +156,7 @@ class Admin extends Seeder
             [
                 'id' => 13,
                 'pid' => 8,
-                'name' => 'admin.Admin/editSelf',
+                'name' => 'admin.Admin/wdlEditSelf',
                 'title' => '编辑个人信息',
                 'icon' => 'fa-500px',
                 'sort' => 9,

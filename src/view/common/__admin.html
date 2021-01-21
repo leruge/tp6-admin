@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>后台基础模板</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/static/mini/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/mini/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="/static/mini/css/public.css" media="all">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="layuimini-bg-color">
+        .layui-table-cell {
+            height: auto;
+            width: auto;
+        }
+        .layui-table-cell img {
+            max-height: 100px;
+            max-width: 200px;
+        }
+        #imgZmList {
+            width: 860px;
+            position: relative;
+            margin: 10px auto;
+            min-height: 200px;
+        }
+
+        #imgList li, #imgZmList li, #imgListdz li #imgListpz li #imgListyy li {
+            width: 150px;
+            height: 150px;
+            float: left;
+            list-style: none;
+            list-style-type: none;
+            display: inline-block;
+            position:absolute;
+        }
+
+        #imgList li:hover, #imgZmList li:hover, #imgListdz li:hover, #imgListpz li:hover, #imgListyy li:hover {
+            border-color: #9a9fa4;
+            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.85);
+        }
+
+        #imgList .active, #imgZmList .active, #imgListdz .active, #imgListpz .active, #imgListyy .active {
+            border: 1px dashed red;
+        }
+
+        .img_close {
+            height: 20px;
+            background-color: rgba(0,0,0,.5);
+            position: absolute;
+            top: 0;
+            right: 0px;
+            width: 20px;
+            color: #fff;
+            line-height: 18px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .img_close:hover {
+            cursor: pointer;
+        }
+        .layui-table th{
+            font-weight: bold;
+        }
+    </style>
+    {block name="css"}{/block}
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        {block name="body"}{/block}
+    </div>
+</div>
+
+<script src="/static/mini/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/static/mini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+{block name="js"}{/block}
+</body>
+</html>

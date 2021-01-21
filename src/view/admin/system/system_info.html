@@ -1,0 +1,107 @@
+{extend name="common/__admin"}
+
+{block name="css"}{/block}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">系统的常用设置，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>基本信息</legend>
+</fieldset>
+
+<form class="layui-form">
+    <input type="hidden" name="id" value="{$systemInfo.id}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">网站名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="web_name" value="{$systemInfo.web_name}" placeholder="网站名称" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">版权信息</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="copyright" value="{$systemInfo.copyright}" placeholder="版权信息" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">LOGO</label>
+        <div class="layui-input-block">
+            <input type="hidden" id="logo" name="logo" value="{$systemInfo.logo}">
+            <img src="{$systemInfo.logo}" id="logo_pic" style="max-height: 100px;" alt="logo">
+            <button class="layui-btn layui-btn-normal" type="button" id="upload_pic"><i class="layui-icon">&#xe67c;</i>选择LOGO</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">关于我们</label>
+        <div class="layui-input-block">
+            <div id="about_us"></div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="submit">设置</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form", "upload", "wangEditor"], function () {
+        let $ = layui.$;
+        // 上传图片
+        layui.upload.render({
+            elem: "#upload_pic",
+            url: "{:url('api.Tool/uploadFile')}",
+            done: function (res) {
+                if (res.code == 1) {
+                    $("#logo").val(res.data.url);
+                    $("#logo_pic").attr("src", res.data.url);
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+
+        // 富文本
+        let editor = new layui.wangEditor('#about_us');
+        editor.customConfig.uploadImgServer = "{:url('api.Tool/uploadFile')}";
+        editor.customConfig.uploadFileName = 'file[]';
+        editor.customConfig.pasteFilterStyle = false;
+        editor.customConfig.uploadImgMaxLength = 5;
+        editor.customConfig.uploadImgHooks = {
+            // 上传超时
+            timeout: function (xhr, editor) {
+                layer.msg('上传超时！')
+            },
+            // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
+            customInsert: function (insertImg, result, editor) {
+                console.log(result)
+                if (result.code == 1) {
+                    var url = result.data.url;
+                    url.forEach(function (e) {
+                        insertImg(e);
+                    })
+                } else {
+                    layer.msg(result.msg);
+                }
+            }
+        };
+        editor.customConfig.customAlert = function (info) {
+            layer.msg(info);
+        };
+        editor.create();
+        editor.txt.html(`{$systemInfo.about_us|raw}`);
+
+        // 提交
+        layui.form.on("submit(submit)", function (obj) {
+            let formData = obj.field;
+            formData['about_us'] = editor.txt.html();
+            request($, "{:url('admin.System/systemInfo')}", formData, function (res) {
+                layer.msg(res.msg);
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

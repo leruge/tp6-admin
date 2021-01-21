@@ -1,0 +1,132 @@
+{extend name="common/__admin"}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">菜单设置，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>菜单信息</legend>
+</fieldset>
+<div>
+    <table id="table" class="layui-table" lay-filter="table"></table>
+</div>
+
+<!--显示与隐藏-->
+<script id="is_show" type="text/html">
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="显示|隐藏" lay-filter="is_show" {{d.is_show == 1 ? "checked" : ""}}>
+</script>
+
+<!--操作-->
+<script id="operation" type="text/html">
+    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+    <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+</script>
+
+<!--工具栏-->
+<script id="toolbar" type="text/html">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="open">全部展开</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="close">全部折叠</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加菜单</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="refresh">刷新</button>
+    </div>
+</script>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['treeTable', 'form', 'miniTab'], function () {
+        let $ = layui.$;
+
+        // 树形表格
+        let dataTable = layui.treeTable.render({
+            elem: "#table",
+            tree: {
+                iconIndex: 1,
+                isPidData: true,
+            },
+            cols: [[
+                {type: "numbers"},
+                {title: "菜单名", field: "title"},
+                {title: "排序", field: "sort", edit: "text"},
+                {title: "显示", toolbar: "#is_show"},
+                {title: "操作", toolbar: "#operation"}
+            ]],
+            url: "{:url('admin.System/menuList')}",
+            method: "post",
+            parseData: function (res) {
+                return {
+                    code: res.code,
+                    msg: res.msg,
+                    data: res.data.list,
+                    count: res.data.count
+                };
+            },
+            even: true,
+            toolbar: "#toolbar",
+            defaultToolbar: []
+        });
+
+        // 排序
+        layui.treeTable.on("edit(table)", function (obj) {
+            let data = {};
+            data[obj.field] = obj.value;
+            data['id'] = obj.data.id;
+            request($, "{:url('admin.System/editMenu')}", data, function (res) {
+                layer.msg(res.msg);
+            });
+        });
+
+        // 显示和隐藏
+        layui.form.on("switch(is_show)", function (obj) {
+            let isShow = 1;
+            if (obj.elem.checked) {
+                isShow = 1;
+            } else {
+                isShow = 2;
+            }
+            request($, "{:url('admin.System/editMenu')}", {id: obj.value, is_show: isShow}, function (res) {
+                layer.msg(res.msg);
+                if (res.code != 1) {
+                    obj.elem.checked = !obj.elem.checked;
+                    layui.form.render();
+                }
+            });
+        });
+
+        // 工具栏
+        layui.treeTable.on("toolbar(table)", function (obj) {
+            if (obj.event == "open") {
+                dataTable.expandAll();
+            } else if (obj.event == "close") {
+                dataTable.foldAll();
+            } else if (obj.event == "add") {
+                layui.miniTab.openNewTabByIframe({
+                    href: "{:url('admin.System/addMenu')}",
+                    title: "添加菜单"
+                });
+            } else if (obj.event == "refresh") {
+                location.reload();
+            }
+        });
+
+        // 工具
+        layui.treeTable.on("tool(table)", function (obj) {
+            if (obj.event == "edit") {
+                layui.miniTab.openNewTabByIframe({
+                    title: "编辑菜单",
+                    href: "{:url('admin.System/editMenu')}?id=" +obj.data.id
+                });
+            } else if (obj.event == "del") {
+                layer.confirm("确定删除吗？", {icon: 3, title: "删除菜单"}, function () {
+                    $.post("{:url('admin.System/delMenu')}", {id: obj.data.id}, function (res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                            obj.del();
+                        }
+                    }, "json");
+                });
+            }
+        });
+    });
+</script>
+{/block}

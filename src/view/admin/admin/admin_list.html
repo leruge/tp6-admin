@@ -1,0 +1,162 @@
+{extend name="common/__admin"}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">管理员列表，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>管理员列表</legend>
+</fieldset>
+
+<fieldset class="table-search-fieldset">
+    <legend>搜索信息</legend>
+    <div>
+        <form class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" name="username" id="username" placeholder="用户名">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search"><i class="layui-icon layui-icon-search"></i>搜索</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</fieldset>
+
+<table id="table" lay-filter="table"></table>
+
+<!--状态-->
+<script id="status" type="text/html">
+    <input type="checkbox" lay-skin="switch" lay-text="正常|禁用" lay-filter="status" value="{{d.id}}" {{d.status == 1 ? "checked" : ""}}>
+</script>
+
+<!--操作-->
+<script id="operation" type="text/html">
+    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+    <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+</script>
+
+<!--工具栏-->
+<script id="toolbar" type="text/html">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="del">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+    </div>
+</script>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['table', 'form', 'miniTab'], function () {
+        let $ = layui.jquery;
+        // 数据表格
+        layui.table.render({
+            elem: "#table",
+            cols: [[
+                {type: "checkbox"},
+                {title: "角色", field: "group_name"},
+                {title: "用户名", field: "username"},
+                {title: "状态", toolbar: "#status"},
+                {title: "操作", toolbar: "#operation"}
+            ]],
+            url: "{:url('admin.Admin/adminList')}",
+            method: "post",
+            parseData: function (res) {
+                return {
+                    code: res.code,
+                    msg: res.msg,
+                    data: res.data.list,
+                    count: res.data.count
+                };
+            },
+            page: true,
+            even: true,
+            toolbar: "#toolbar",
+            defaultToolbar: []
+        });
+
+        // 搜索
+        layui.form.on("submit(search)", function (obj) {
+            layui.table.reload("table", {
+                where: obj.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        // 工具栏
+        layui.table.on("toolbar(table)", function (obj) {
+            if (obj.event == "add") {
+                layui.miniTab.openNewTabByIframe({
+                    title: "添加管理员",
+                    href: "{:url('admin.Admin/addAdmin')}"
+                });
+            } else if (obj.event == "del") {
+                let delData = layui.table.checkStatus("table").data;
+                if (delData.length == 0) {
+                    layer.msg("至少选择一个");
+                } else {
+                    layer.confirm("确定删除吗？", {icon: 3, title: "删除管理员"}, function () {
+                        let admin_ids = delData.map(x => {return x.id}).join(",");
+                        request($, "{:url('admin.Admin/delAdmin')}", {admin_ids: admin_ids}, function (res) {
+                            if (res.code == 1) {
+                                layer.msg(res.msg, function () {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        });
+                    });
+                }
+            } else if (obj.event == "refresh") {
+                location.reload();
+            }
+        });
+
+        // 状态
+        layui.form.on("switch(status)", function (obj) {
+            let status = 1;
+            if (obj.elem.checked) {
+                status = 1;
+            } else {
+                status = 2;
+            }
+            request($, "{:url('admin.Admin/editAdmin')}", {status: status, id: obj.value}, function (res) {
+                if (res.code == 1) {
+                    layer.msg(res.msg);
+                } else {
+                    obj.elem.checked = !obj.elem.checked;
+                    layui.form.render();
+                    layer.msg(res.msg);
+                }
+            });
+        });
+
+        // 工具
+        layui.table.on("tool(table)", function (obj) {
+            if (obj.event == "edit") {
+                layui.miniTab.openNewTabByIframe({
+                    title: "编辑管理员",
+                    href: "{:url('admin.admin/editAdmin')}?id=" + obj.data.id
+                });
+            } else if (obj.event == "del") {
+                layer.confirm("确定删除吗？", {icon: 3, title: "删除管理员"}, function () {
+                    request($, "{:url('admin.admin/delAdmin')}", {admin_ids: obj.data.id}, function (res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                            obj.del();
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,101 @@
+{extend name="common/__admin"}
+
+{block name="css"}{/block}
+
+{block name="body"}
+<blockquote class="layui-elem-quote layui-text">APP设置，欢迎使用后台管理系统</blockquote>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>APP信息</legend>
+</fieldset>
+
+<form class="layui-form">
+    <input type="hidden" name="id" value="{$systemInfo.id}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">安卓版本</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="android_version" value="{$systemInfo.android_version}" placeholder="安卓版本" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">安卓地址</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="android_url" name="android_url" value="{$systemInfo.android_url}" placeholder="安卓地址" autocomplete="off">
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-normal" type="button" id="upload_pic"><i class="layui-icon">&#xe67c;</i>上传APK</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">苹果版本</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="ios_version" value="{$systemInfo.ios_version}" placeholder="苹果版本" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">苹果地址</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="ios_url" value="{$systemInfo.ios_url}" placeholder="苹果地址" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">更新描述</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="update_desc" value="{$systemInfo.update_desc}" placeholder="更新描述" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">苹果上架</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="up_ios" value="{$systemInfo.up_ios}" placeholder="苹果上架版本" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="submit">设置</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form", "upload"], function () {
+        let $ = layui.$,
+            load = null;
+        // 上传图片
+        layui.upload.render({
+            elem: "#upload_pic",
+            url: "{:url('api.Tool/uploadFile')}",
+            data: {type: 2},
+            accept: "file",
+            exts: "apk",
+            done: function (res) {
+                layer.close(load);
+                if (res.code == 1) {
+                    $("#android_url").val(res.data.url);
+                } else {
+                    layer.msg(res.msg);
+                }
+            },
+            choose: function () {
+                load = layer.load();
+            },
+            error: function () {
+                layer.close(load);
+            }
+        });
+
+        // 提交
+        layui.form.on("submit(submit)", function (obj) {
+            let formData = obj.field;
+            request($, "{:url('admin.System/systemInfo')}", formData, function (res) {
+                layer.msg(res.msg);
+            });
+            return false;
+        });
+    });
+</script>
+{/block}
