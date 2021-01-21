@@ -6,6 +6,9 @@
 1. 权限
 1. 迁移和种子
 1. 错误页面、下载页面、首页、隐私协议
+1. 下载页面 `域名+down.html`
+1. 首页 `域名`
+1. 隐私协议地址 `域名+agreement.html`
 
 ## 使用说明
 1. 安装后台扩展 `composer require leruge/tp6-admin=dev-master`
