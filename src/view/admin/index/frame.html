@@ -145,8 +145,10 @@
         miniAdmin.render(options);
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = 'page/login-3.html';
+            request($, "{:url('admin.Login/logout')}", null, function (res) {
+                layer.msg(res.msg, function () {
+                    window.location = "{:url('admin.Login/login')}";
+                });
             });
         });
     });

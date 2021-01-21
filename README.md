@@ -11,8 +11,7 @@
 1. 安装后台扩展 `composer require leruge/tp6-admin=dev-master`
 1. 安装封装函数 `composer require leruge/tp6-helper=dev-main`
 1. 生成后台所需文件 `php think leruge:admin`
-1. 执行完后会在config目录生成extra.php和admin.php配置文件
-1. 执行完成以后会生成各种模型、控制器等文件
+1. 执行完后会在config目录生成extra.php和admin.php配置文件，自行配置即可
 1. 开启开发模式env，配置app_url全局url
 1. 删除static下的.gitignore文件
 1. 配置数据库，编码设置utf8mb4
@@ -26,4 +25,4 @@
     'root' => app()->getRootPath() . 'public' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'uploads',
 ]
 ```
-1. 实现send_code($phone, $code)，返回结果1是发送成功
+1. 在公共函数中实现send_code($phone, $code)，返回结果1是发送成功

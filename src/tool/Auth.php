@@ -94,19 +94,23 @@ class Auth
      */
     public function userRuleIdList($uid)
     {
-        if (in_array($uid, $this->config['super_id_array'])) {
+        if (!$this->config['auth_on']) {
             $ruleIdArray = (new $this->authRule)->column('id');
         } else {
-            $groupIdArray = (new $this->authGroupAccess)->where('uid', $uid)->column('group_id');
-            $where[] = ['id', 'in', $groupIdArray];
-            $rulesList = (new $this->authGroup)->where($where)->column('rules');
-            $ruleIdArray = [];
-            foreach ($rulesList as $k => $v) {
-                $ruleIdArray = array_merge($ruleIdArray, explode(',', trim($v, ',')));
+            if (in_array($uid, $this->config['super_id_array'])) {
+                $ruleIdArray = (new $this->authRule)->column('id');
+            } else {
+                $groupIdArray = (new $this->authGroupAccess)->where('uid', $uid)->column('group_id');
+                $where[] = ['id', 'in', $groupIdArray];
+                $rulesList = (new $this->authGroup)->where($where)->column('rules');
+                $ruleIdArray = [];
+                foreach ($rulesList as $k => $v) {
+                    $ruleIdArray = array_merge($ruleIdArray, explode(',', trim($v, ',')));
+                }
+                $ruleIdArray = array_unique($ruleIdArray);
+                $ruleIdArray = array_filter($ruleIdArray);
+                sort($ruleIdArray);
             }
-            $ruleIdArray = array_unique($ruleIdArray);
-            $ruleIdArray = array_filter($ruleIdArray);
-            sort($ruleIdArray);
         }
         return $ruleIdArray;
     }
