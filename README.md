@@ -5,7 +5,7 @@
 1. 管理员管理
 1. 权限
 1. 迁移和种子
-1. 错误页面、下载页面、首页
+1. 错误页面、下载页面、首页、隐私协议
 
 ## 使用说明
 1. 安装后台扩展 `composer require leruge/tp6-admin=dev-master`
@@ -25,4 +25,7 @@
     'root' => app()->getRootPath() . 'public' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'uploads',
 ]
 ```
+1. 在app.php配置文件修改配置 `'exception_tmpl'   => env('app_debug') ? app()->getThinkPath() . 'tpl/think_exception.tpl' :
+                             app()->getRootPath() . 'view' . DIRECTORY_SEPARATOR . 'error' . DIRECTORY_SEPARATOR . 'error.html',`
 1. 在公共函数中实现send_code($phone, $code)，返回结果1是发送成功
+1. 下载页面需要配置urlscheme，在index控制器的down方法中

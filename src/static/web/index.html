@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<body>
+		<div class="container" style="height: 66px;">
+			<nav class="navbar" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+							<span class="sr-only">切换导航</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#"><img src="img/logo.jpg"></a>
+					</div>
+					<div class="collapse navbar-collapse navbar-right" id="example-navbar-collapse" style="margin-top: 12px;">
+						<ul class="nav navbar-nav">
+							<li class="active">
+								<a href="index.html"><span class="glyphicon glyphicon-home"></span>
+									首页
+								</a>
+							</li>
+							<li>
+								<a href="资讯.html"><span class="glyphicon glyphicon-sort-by-alphabet"></span>
+									资讯
+								</a>
+							</li>
+							<li>
+								<a href="案例.html"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+									案例 
+								</a>
+							</li>
+							<li>
+								<a href="关于.html"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+									关于
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<!--轮播图-->
+		<div class="container-fluid">
+			<div id="slider">
+				<ul class="slides clearfix">
+					<li><img class="responsive" src="img/slide1.png"></li>
+					<li><img class="responsive" src="img/slide2.png"></li>
+					<li><img class="responsive" src="img/slide3.png"></li>
+				</ul>
+				<ul class="controls">
+					<li><img src="img/prev.png" alt="previous"></li>
+					<li><img src="img/next.png" alt="next"></li>
+				</ul>
+				<ul class="pagination">
+					<li class="active"></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+		<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
+		<script src="dist/easySlider.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#slider").easySlider({
+					slideSpeed: 500,
+					paginationSpacing: "15px",
+					paginationDiameter: "12px",
+					paginationPositionFromBottom: "20px",
+					slidesClass: ".slides",
+					controlsClass: ".controls",
+					paginationClass: ".pagination"
+				});
+			});
+		</script>
+
+		<div class="container text-center">
+			<ul class="nav justify-content-center">
+				<li class="nav-item text-primary">
+					<h1 style="font-size: 1.5em;">「为什么选择HOUPU IT教育」</h1>
+				</li>
+			</ul>
+			<ul class="nav justify-content-center">
+				<li class="nav-item text-muted">
+					<p>强大的师资力量，完美的实战型管理课程，让您的企业实现质的腾飞！</p>
+				</li>
+			</ul>
+		</div>
+		<br /><br /><br />
+
+		<div class="container">
+			<div class="row">
+				<div style="float: left;">
+					<img src="img/tab1-1.png" />
+					<div style="float: right;line-height: 33px; margin: 0 46px 35px 0;">
+						课程内容
+						<p class="text-muted"><del>其他：高校不知名的讲师编写，没有任何实战价值的教材！</del></p>
+						<p>我们：知名企业家、管理学大师联合编写的具有真实性教材！</p>
+					</div>
+				</div>
+				<div style="float: left;">
+					<img src="img/tab1-2.png" />
+					<div style="float: right;line-height: 33px;margin: 0 46px 35px 0;">
+						课程内容
+						<p class="text-muted"><del>其他：高校不知名的讲师编写，没有任何实战价值的教材！</del></p>
+						<p>我们：知名企业家、管理学大师联合编写的具有真实性教材！</p>
+					</div>
+				</div>
+				<div style="float: left;">
+					<img src="img/tab1-3.png" />
+					<div style="float: right;line-height: 33px; margin: 0 46px 35px 0;">
+						课程内容
+						<p class="text-muted"><del>其他：高校不知名的讲师编写，没有任何实战价值的教材！</del></p>
+						<p>我们：知名企业家、管理学大师联合编写的具有真实性教材！</p>
+					</div>
+				</div>
+				<div style="float: left;">
+					<img src="img/tab1-4.png" />
+					<div style="float: right;line-height: 33px;">
+						课程内容
+						<p class="text-muted"><del>其他：高校不知名的讲师编写，没有任何实战价值的教材！</del></p>
+						<p>我们：知名企业家、管理学大师联合编写的具有真实性教材！</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid jumbotron" style="background: url(img/slide.png) ;">
+			<div class="container">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-3 col-md-6 text-center" style="padding: 170px 0 0 0;">
+							<p style="font-size: 1.5em;">强大的学习体系</p>
+							<p class="text-secondary">经过管理学大师层层把关、让您的企业突飞猛进</p>
+						</div>
+						<div class="col-sm-9 col-md-6" style="padding: 0 0 0 100px;">
+							<img src="img/tab2.png" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<br /><br /><br />
+
+		<div class="container">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-9 col-md-6" style="padding: 0 0 0 30px;">
+						<img src="img/tab3.png" />
+					</div>
+					<div class="col-sm-3 col-md-6 text-center" style="padding: 100px 0 0 0;">
+						<p style="font-size: 1.5em;">强大的学习体系</p>
+						<p class="text-secondary" style="font-size: 1.5em; padding: 10px 0 0 0;">经过管理学大师层层把关、让您的企业突飞猛进</p>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="container-fluid bg-primary text-white">
+			<div class="container text-center" style="line-height: 35px;">
+				<p>企业培训 | 合作事宜 | 版权投诉</p>
+				<p>鄂ICP 备12345678. ©2009-2016 HOUPU IT教育. Powered by Bootstrap.</p>
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

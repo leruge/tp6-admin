@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{$web_name}--下载页面</title>
+    <style>
+        html{
+            font-family: sans-serif;
+        }
+        html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,strong,var,fieldset,form,label,dl,dt,dd,cite,input,hr,time,mark,code,figcaption,figure,textarea,h1,h2,h3,h4,h5,h6,p{
+            margin:0;
+            border:0;
+            padding:0;
+            font-style:normal;
+        }
+        html,body {
+            -webkit-touch-callout:none;
+            -webkit-text-size-adjust:none;
+            -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+            -webkit-user-select:none;
+            background-color: #fff;
+        }
+        nav,article,aside,details,main,header,footer,section,fieldset,figcaption,figure{
+            display: block;
+        }
+        img,a,button,em,del,strong,var,label,cite,small,time,mark,code,textarea{
+            display:inline-block;
+        }
+        header,section,footer {
+            position:relative;
+        }
+        ol,ul{
+            list-style:none;
+        }
+        input,button,textarea {
+            border:0;
+            margin:0;
+            padding:0;
+            font-size:1em;
+            line-height:1em;
+            /*-webkit-appearance:none;*/
+            background-color:rgba(0, 0, 0, 0);
+        }
+        span{
+            display:inline-block;
+        }
+        a:active, a:hover {
+            outline: 0;
+        }
+        a, a:visited{
+            text-decoration:none;
+        }
+
+        label, .wordWrap{
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        td,th {
+            padding: 0;
+        }
+        .clearfix:after{
+            content: ' ';
+            display: block;
+            clear: both;
+            visibility:hidden;
+            line-height: 0;
+            height:0;
+        }
+        span {
+            display: inline-block;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        .head {
+            width: 100%;
+            height: auto;
+        }
+        .head img {
+            display: block;
+        }
+        .subject-t {
+            width: 100%;
+            height: auto;
+        }
+        .subject-t img {
+            display: block;
+        }
+        .logo {
+            text-align: center;
+            background: top center no-repeat #fff;
+            width: 160px;
+            height: 160px;
+            background-size: 100% auto;
+            border: none;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        .logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 70px;
+            position: relative;
+            top: 25px;
+        }
+        .name {
+            text-align: center;
+            font-size: 24px;
+        }
+        .message {
+            text-align: center;
+            font-size: 14px;
+            color: #969b9d;
+            margin-top: 5px;
+        }
+        .qrcode {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto;
+            margin-top: 30px;
+        }
+        .install {
+            text-align: center;
+        }
+        .install a {
+            width: 194px;
+            height: 46px;
+            background: #28caad;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            line-height: 46px;
+            border-radius: 60px;
+            margin-top: 30px;
+        }
+        .rest {
+            margin-top: 20px;
+            text-align: center;
+            color: #969b9d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="subject">
+        <div class="subject-t">
+            <img src="https://s2.ax1x.com/2019/12/04/Ql4FgA.png">
+        </div>
+        <div class="subject-b">
+            <div class="logo">
+                <img src="{$logo}">
+            </div>
+            <div class="name">{$web_name}</div>
+            <div class="qrcode">
+                <img src="{$qr_url}">
+            </div>
+            <div class="install">
+                <a href="#" id="install">点击安装</a>
+            </div>
+            <div class="rest">或者用手机扫描二维码安装</div>
+        </div>
+    </div>
+</div>
+
+<button class="register-user" data-clipboard-text="register-{$memberId}" style="display: none;"></button>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.min.js"></script>
+<script>
+    var androidUrl = "{$android_url}";
+    var iosUrl = "{$ios_url}";
+    var memberId = "{$memberId}";
+
+    var clipboard = new ClipboardJS('.register-user');
+
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+    $("#install").click(function () {
+        $(".register-user").click();
+        if (isAndroid) {
+            location.href = "{$urlScheme}://?page=index";
+            setTimeout(function () {
+                if (document.visibilityState == "visible") {
+                    location.href = androidUrl;
+                }
+            }, 1000);
+        } else if (isiOS) {
+            location.href = "{$urlScheme}://?page=index";
+            setTimeout(function () {
+                if (document.visibilityState == "visible") {
+                    location.href = iosUrl;
+                }
+            }, 1000);
+        } else {
+            alert("无法识别您的手机系统");
+        }
+    });
+
+
+
+    function is_weixin() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    var isWeixin = is_weixin();
+    var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight;
+    var weixinTip = $('<div id="weixinTip"><p><img src="https://s2.ax1x.com/2019/10/23/KJNP6s.png" alt="微信打开" style="max-width: 100%; height: auto;"/></p></div>');
+
+    if(isWeixin){
+        $("body").append(weixinTip);
+    }
+    $("#weixinTip").css({
+        "position":"fixed",
+        "left":"0",
+        "top":"0",
+        "height":winHeight,
+        "width":"100%",
+        "z-index":"1000",
+        "background-color":"rgba(0,0,0,0.8)",
+        "filter":"alpha(opacity=80)",
+    });
+    $("#weixinTip p").css({
+        "text-align":"center",
+        "margin-top":"10%",
+        "padding-left":"5%",
+        "padding-right":"5%"
+    });
+</script>
+</body>
+</html>
