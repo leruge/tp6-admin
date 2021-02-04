@@ -54,7 +54,7 @@ class Admin extends Migrator
             ->create();
 
         $this->table('auth_rule', ['collation' => 'utf8mb4_bin', 'comment' => '权限表'])
-            ->addColumn('pid', 'integer', ['null' => true, 'comment' => '上级ID'])
+            ->addColumn('pid', 'integer', ['default' => 0, 'comment' => '上级ID'])
             ->addColumn('name', 'string', ['null' => true, 'comment' => '权限规则'])
             ->addColumn('title', 'string', ['null' => true, 'comment' => '权限规则中文'])
             ->addColumn('icon', 'string', ['null' => true, 'comment' => '图标'])
