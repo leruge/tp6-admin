@@ -57,7 +57,12 @@ class Tool
                     $saveNameArray[] = handle_get_pic($hashInfo['url'], 3);
                 } else {
                     $saveName = Filesystem::putFile('', $file);
-                    $saveNameArray[] = handle_get_pic(str_replace('\\', '/', '/static/uploads/' . $saveName), 3);
+                    $url = str_replace('\\', '/', '/static/uploads/' . $saveName);
+                    Store::create([
+                        'url' => $url,
+                        'hash' => $hash
+                    ]);
+                    $saveNameArray[] = handle_get_pic($url, 3);
                 }
             }
             result(['url' => $saveNameArray], 1, '上传成功');
@@ -72,7 +77,12 @@ class Tool
                 $url = handle_get_pic($hashInfo['url'], 3);
             } else {
                 $saveName = Filesystem::putFile('', $file);
-                $url = handle_get_pic(str_replace('\\', '/', '/static/uploads/' . $saveName), 3);
+                $url = str_replace('\\', '/', '/static/uploads/' . $saveName);
+                Store::create([
+                    'url' => $url,
+                    'hash' => $hash
+                ]);
+                $url = handle_get_pic($url, 3);
             }
             result(['url' => $url], 1, '上传成功');
         }
