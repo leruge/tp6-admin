@@ -64,6 +64,7 @@ class System extends Validate
     public function sceneAdd()
     {
         return $this->only(['pid', 'title', 'name', 'icon', 'sort', 'is_show'])
+            ->remove('name', 'require')
             ->append('name', 'unique:auth_rule');
     }
 }
