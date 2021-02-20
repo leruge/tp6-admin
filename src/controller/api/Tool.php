@@ -149,9 +149,11 @@ class Tool
     {
         $systemInfo = System::order('id', 'desc')->find();
         $info = [
-            'title' => $systemInfo['web_name'],
-            'logo' => $systemInfo['logo'],
-            'about_us' => $systemInfo['about_us']
+            'info' => [
+                'title' => $systemInfo['web_name'],
+                'logo' => $systemInfo['logo'],
+                'about_us' => $systemInfo['about_us']
+            ]
         ];
         result($info, 1, '获取信息成功');
     }
