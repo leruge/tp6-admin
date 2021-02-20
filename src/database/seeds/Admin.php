@@ -212,7 +212,7 @@ class Admin extends Seeder
         $this->table('auth_rule')->insert($authRuleData)->save();
 
         $systemData = [
-            ['id' => 1, 'web_name' => 'APP名称', 'copyright' => 'APP名称', 'logo' => '/static/default/no.jpg', 'create_time' => time(), 'update_time' => time()]
+            ['id' => 1, 'web_name' => 'APP名称', 'copyright' => 'APP名称', 'logo' => '/static/default/no.jpg', '关于我们', 'create_time' => time(), 'update_time' => time()]
         ];
         $this->table('system')->insert($systemData)->save();
     }
