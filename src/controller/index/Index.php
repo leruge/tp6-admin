@@ -25,7 +25,7 @@ class Index
     {
         $memberId = input('member_id', 0);
         $system = System::order('id', 'desc')->find();
-        $text = (string)url('web.Index/down', ['member_id' => $memberId], true, true);
+        $text = (string)url('index.Index/down', ['member_id' => $memberId], true, true);
         $outFile = root_path() . 'public/static/uploads/' . $memberId . '.png';
         $url = config('extra.app_url') . '/static/uploads/' . $memberId . '.png';
         if (!file_exists($outFile)) {
