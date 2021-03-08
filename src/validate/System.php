@@ -39,7 +39,10 @@ class System extends Validate
      *
      * @var array
      */
-    protected $message = [];
+    protected $message = [
+		'name.unique' => '该菜单地址已经存在了',
+		'username.unique' => '用户名已存在',
+	];
 
     public function sceneEdit()
     {
