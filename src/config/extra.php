@@ -8,4 +8,6 @@
 return [
     // 网站地址
     'app_url' => env('app_url', 'http://dpadmin.io/'),
+    'default_avatar' => '/static/default/avatar.png',
+    'default_pic' => '/static/default/no.jpg',
 ];
